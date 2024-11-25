@@ -1,11 +1,11 @@
 <?php
 
-namespace Wikimedia\Tests\Message;
+namespace Wikimedia\Message\Tests\Unit\Message;
 
 use InvalidArgumentException;
-use MediaWiki\Json\JsonCodec;
-use MediaWikiUnitTestCase;
+use PHPUnit\Framework\TestCase;
 use stdClass;
+use Wikimedia\JsonCodec\JsonCodec;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Message\ParamType;
 use Wikimedia\Message\ScalarParam;
@@ -13,46 +13,52 @@ use Wikimedia\Message\ScalarParam;
 /**
  * @covers \Wikimedia\Message\ScalarParam
  */
-class ScalarParamTest extends MediaWikiUnitTestCase {
-	use MessageSerializationTestTrait;
+class ScalarParamTest extends TestCase {
 
-	/**
-	 * Overrides SerializationTestTrait::getClassToTest
-	 * @return string
-	 */
-	public static function getClassToTest(): string {
-		return ScalarParam::class;
-	}
-
-	public static function provideConstruct() {
+	public static function provideConstruct(): array {
 		return [
 			'num' => [
-				[ ParamType::NUM, 1, ],
+				[
+					ParamType::NUM,
+					1,
+				],
 				'<num>1</num>',
 			],
 			'plain' => [
-				[ ParamType::PLAINTEXT, 'foo & bar', ],
+				[
+					ParamType::PLAINTEXT,
+					'foo & bar',
+				],
 				'<plaintext>foo &amp; bar</plaintext>',
 			],
 			'text' => [
-				[ ParamType::TEXT, new MessageValue( 'key' ), ],
+				[
+					ParamType::TEXT,
+					new MessageValue( 'key' ),
+				],
 				'<text><message key="key"></message></text>',
 			],
 			'T377912' => [
-				[ ParamType::PLAINTEXT, T377912TestCase::class ],
+				[
+					ParamType::PLAINTEXT,
+					T377912TestCase::class,
+				],
 				'<plaintext>' . T377912TestCase::class . '</plaintext>',
-			]
+			],
 		];
 	}
 
 	/** @dataProvider provideConstruct */
-	public function testSerialize( $args, $_ ) {
-		[ $type, $value ] = $args;
-		$codec = new JsonCodec;
+	public function testSerialize( $args ) {
+		[
+			$type,
+			$value,
+		] = $args;
+		$jsonCodec = new JsonCodec;
 		$obj = new ScalarParam( $type, $value );
 
-		$serialized = $codec->serialize( $obj );
-		$newObj = $codec->deserialize( $serialized );
+		$serialized = $jsonCodec->toJsonString( $obj );
+		$newObj = $jsonCodec->newFromJsonString( $serialized );
 
 		// XXX: would be nice to have a proper ::equals() method.
 		$this->assertEquals( $obj->dump(), $newObj->dump() );
@@ -60,7 +66,10 @@ class ScalarParamTest extends MediaWikiUnitTestCase {
 
 	/** @dataProvider provideConstruct */
 	public function testConstruct( $args, $expected ) {
-		[ $type, $value ] = $args;
+		[
+			$type,
+			$value,
+		] = $args;
 		$mp = new ScalarParam( $type, $value );
 		$this->assertSame( $type, $mp->getType() );
 		$this->assertSame( $value, $mp->getValue() );
@@ -79,13 +88,6 @@ class ScalarParamTest extends MediaWikiUnitTestCase {
 		$this->expectException( InvalidArgumentException::class );
 		$this->expectExceptionMessage( '$type must be one of the ParamType constants' );
 		new ScalarParam( 'invalid', '' );
-	}
-
-	public function testConstruct_badValueNULL() {
-		$this->expectDeprecationAndContinue(
-			'/Using null as message parameter was deprecated/'
-		);
-		new ScalarParam( ParamType::TEXT, null );
 	}
 
 	public function testConstruct_badValueClass() {

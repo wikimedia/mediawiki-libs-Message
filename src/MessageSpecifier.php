@@ -42,8 +42,3 @@ interface MessageSpecifier {
 	 */
 	public function getParams(): array;
 }
-
-/**
- * @deprecated since 1.43
- */
-class_alias( MessageSpecifier::class, 'MessageSpecifier' );

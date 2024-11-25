@@ -1,8 +1,7 @@
 <?php
 
-namespace Wikimedia\Tests\Message;
+namespace Wikimedia\Message\Tests\Unit\Message;
 
-use MediaWikiCoversValidator;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Wikimedia\Message\MessageParam;
@@ -13,7 +12,6 @@ use Wikimedia\TestingAccessWrapper;
  * @covers \Wikimedia\Message\MessageParam
  */
 class MessageParamTest extends TestCase {
-	use MediaWikiCoversValidator;
 
 	public function testGetType() {
 		$mp = $this->getMockForAbstractClass( MessageParam::class );

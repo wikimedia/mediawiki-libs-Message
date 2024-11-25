@@ -1,10 +1,10 @@
 <?php
 
-namespace Wikimedia\Tests\Message;
+namespace Wikimedia\Message\Tests\Unit\Message;
 
 use InvalidArgumentException;
-use MediaWiki\Json\JsonCodec;
-use MediaWikiUnitTestCase;
+use PHPUnit\Framework\TestCase;
+use Wikimedia\JsonCodec\JsonCodec;
 use Wikimedia\Message\ListParam;
 use Wikimedia\Message\ListType;
 use Wikimedia\Message\MessageParam;
@@ -15,38 +15,45 @@ use Wikimedia\Message\ScalarParam;
 /**
  * @covers \Wikimedia\Message\ListParam
  */
-class ListParamTest extends MediaWikiUnitTestCase {
-	use MessageSerializationTestTrait;
+class ListParamTest extends TestCase {
 
-	/**
-	 * Overrides SerializationTestTrait::getClassToTest
-	 * @return string
-	 */
-	public static function getClassToTest(): string {
-		return ListParam::class;
-	}
-
-	public static function provideConstruct() {
+	public static function provideConstruct(): array {
 		return [
 			'commaList' => [
-				[ ListType::COMMA, [ 1, 2, 3 ] ],
+				[
+					ListType::COMMA,
+					[
+						1,
+						2,
+						3,
+					],
+				],
 				'<list listType="comma"><text>1</text><text>2</text><text>3</text></list>',
 			],
 			'andList' => [
-				[ ListType::AND, [ new ScalarParam( ParamType::NUM, 5 ), new MessageValue( 'key' ) ] ],
+				[
+					ListType::AND,
+					[
+						new ScalarParam( ParamType::NUM, 5 ),
+						new MessageValue( 'key' ),
+					],
+				],
 				'<list listType="text"><num>5</num><text><message key="key"></message></text></list>',
 			],
 		];
 	}
 
 	/** @dataProvider provideConstruct */
-	public function testSerialize( $args, $_ ) {
-		[ $type, $values ] = $args;
-		$codec = new JsonCodec;
+	public function testSerialize( $args ) {
+		[
+			$type,
+			$values,
+		] = $args;
+		$jsonCodec = new JsonCodec;
 		$obj = new ListParam( $type, $values );
 
-		$serialized = $codec->serialize( $obj );
-		$newObj = $codec->deserialize( $serialized );
+		$serialized = $jsonCodec->toJsonString( $obj );
+		$newObj = $jsonCodec->newFromJsonString( $serialized );
 
 		// XXX: would be nice to have a proper ::equals() method.
 		$this->assertEquals( $obj->dump(), $newObj->dump() );
@@ -54,7 +61,10 @@ class ListParamTest extends MediaWikiUnitTestCase {
 
 	/** @dataProvider provideConstruct */
 	public function testConstruct( $args, $expected ) {
-		[ $type, $values ] = $args;
+		[
+			$type,
+			$values,
+		] = $args;
 		$mp = new ListParam( $type, $values );
 
 		$expectValues = [];
@@ -73,5 +83,4 @@ class ListParamTest extends MediaWikiUnitTestCase {
 		$this->expectExceptionMessage( '$listType must be one of the ListType constants' );
 		new ListParam( 'invalid', [] );
 	}
-
 }

@@ -1,0 +1,121 @@
+{
+	"name": "wikimedia/message",
+	"description": "This library provides interfaces and value objects for internationalization (i18n) of applications in PHP, using 'en' as the default language code.",
+	"type": "library",
+	"keywords": [
+		"wikimedia",
+		"message"
+	],
+	"authors": [
+		{
+			"name": "Bartosz Dziewoński",
+			"email": "dziewonski@fastmail.fm"
+		},
+		{
+			"name": "Brad Jorsch",
+			"email": "bjorsch@wikimedia.org"
+		},
+		{
+			"name": "Daimona Eaytoy",
+			"email": "daimona.wiki@gmail.com"
+		},
+		{
+			"name": "DannyS712",
+			"email": "dannys712.wiki@gmail.com"
+		},
+		{
+			"name": "James D. Forrester",
+			"email": "jforrester@wikimedia.org"
+		},
+		{
+			"name": "Doğu Abaris",
+			"email": "abaris@null.net"
+		},
+		{
+			"name": "Ebrahim Byagowi",
+			"email": "ebrahim@gnu.org"
+		},
+		{
+			"name": "Isabelle Hurbain-Palatin",
+			"email": "ihurbainpalatin@wikimedia.org"
+		},
+		{
+			"name": "Lucas Werkmeister",
+			"email": "lucas.werkmeister@wikimedia.de"
+		},
+		{
+			"name": "Petr Pchelko",
+			"email": "ppchelko@wikimedia.org"
+		},
+		{
+			"name": "Reedy",
+			"email": "reedy@wikimedia.org"
+		},
+		{
+			"name": "TChin",
+			"email": "tchin@wikimedia.org"
+		},
+		{
+			"name": "Tim Starling",
+			"email": "tstarling@wikimedia.org"
+		},
+		{
+			"name": "Umherirrender",
+			"email": "umherirrender_de.wp@web.de"
+		},
+		{
+			"name": "daniel",
+			"email": "dkinzler@wikimedia.org"
+		}
+	],
+	"license": "GPL-2.0-or-later",
+	"require": {
+		"php": "^7.4 || ^8.0",
+		"ext-json": "*",
+		"wikimedia/json-codec": "^3.0",
+		"wikimedia/testing-access-wrapper": "^3.0"
+	},
+	"require-dev": {
+		"mediawiki/mediawiki-phan-config": "0.15.0",
+		"mediawiki/minus-x": "1.1.3",
+		"php-parallel-lint/php-console-highlighter": "1.0.0",
+		"php-parallel-lint/php-parallel-lint": "1.4.0",
+		"phpunit/phpunit": "9.6.21",
+		"mediawiki/mediawiki-codesniffer": "45.0.0",
+		"ockcyp/covers-validator": "1.6.0",
+		"wikimedia/update-history": "^1.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Wikimedia\\Message\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Wikimedia\\Message\\Tests\\": "tests/"
+		}
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"php -d 'extension=pcov.so' vendor/bin/phpunit",
+			"covers-validator",
+			"phan --allow-polyfill-parser --long-progress-bar",
+			"@phpcs",
+			"minus-x check ."
+		],
+		"fix": [
+			"phpcbf",
+			"minus-x fix ."
+		],
+		"phan": "phan -d . --long-progress-bar",
+		"phpcs": "phpcs -sp --cache"
+	},
+	"config": {
+		"prepend-autoloader": false,
+		"optimize-autoloader": true,
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
+}

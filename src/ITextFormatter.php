@@ -13,7 +13,6 @@ namespace Wikimedia\Message;
  * any message in any language. Implementations should make a best effort to
  * produce human-readable text.
  *
- * @package MediaWiki\MessageFormatter
  */
 interface ITextFormatter {
 	/**

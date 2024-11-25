@@ -7,6 +7,13 @@ of applications in PHP.
 It is based on the i18n code used in MediaWiki, and is also intended to be
 compatible with [jQuery.i18n], a JavaScript i18n library.
 
+## Installation
+Use Composer to install the Message library:
+
+```bash
+composer require wikimedia/message
+```
+
 Concepts
 --------
 
@@ -59,7 +66,7 @@ Class Overview
 
 ### Messages
 
-Messages and their parameters are represented by newable value objects.
+Messages, and their parameters are represented by newable value objects.
 
 **MessageValue** represents an instance of a message, holding the key and any
 parameters. It is mutable in that parameters can be added to the object after
@@ -78,7 +85,7 @@ has two implementations:
 - **ScalarParam** represents a single-valued parameter, such as a text string, a
   number, or another message.
 - **ListParam** represents a list of values, which will be joined together with
-  appropriate separators. It has a "list type" (using constants defined in the
+  appropriate separators. It has a “list type” (using constants defined in the
   **ListType** class) defining the desired separators.
 
 #### Machine-readable messages
@@ -118,22 +125,22 @@ generate the output string:
 
 1. Fetch the message's translation in the formatter's language. Details of this
    fetching are unspecified here.
-   - If no translation is found in the formatter's language, it should attempt
-     to fall back to appropriate other languages. Details of the fallback are
-     unspecified here.
-   - If no translation can be found in any fallback language, a string should
-     be returned that indicates at minimum the message key that was unable to
-     be found.
+    - If no translation is found in the formatter's language, it should attempt
+      to fall back to appropriate other languages. Details of the fallback are
+      unspecified here.
+    - If no translation can be found in any fallback language, a string should
+      be returned that indicates at minimum the message key that was unable to
+      be found.
 2. Replace placeholders with parameter values.
-   - Note that placeholders must not be replaced recursively. That is, if a
-     parameter's value contains text that looks like a placeholder, it must not
-     be replaced as if it really were a placeholder.
-   - Certain types of parameters are not substituted directly at this stage.
-     Instead their placeholders must be replaced with an opaque representation
-     that will not be misinterpreted during later stages.
-     - Parameters of type RAW or PLAINTEXT
-     - TEXT parameters with a MessageValue as the value
-     - LIST parameters with any late-substituted value as one of their values.
+    - Note that placeholders must not be replaced recursively. That is, if a
+      parameter's value contains text that looks like a placeholder, it must not
+      be replaced as if it really were a placeholder.
+    - Certain types of parameters are not substituted directly at this stage.
+      Instead their placeholders must be replaced with an opaque representation
+      that will not be misinterpreted during later stages.
+        - Parameters of type RAW or PLAINTEXT
+        - TEXT parameters with a MessageValue as the value
+        - LIST parameters with any late-substituted value as one of their values.
 3. Process any formatting commands.
 4. Process the source markup language to produce a string in the desired output
    format. This may be a no-op, and may be combined with the previous step if
@@ -279,20 +286,20 @@ In brief, the base directory of the library should contain a directory named
 
 ```json
 {
-    "@metadata": {
-        "authors": [
-            "Alice",
-            "Bob",
-            "Carol",
-            "David"
-        ],
-        "last-updated": "2012-09-21"
-    },
-    "appname-title": "Example Application",
-    "appname-sub-title": "An example application",
-    "appname-header-introduction": "Introduction",
-    "appname-about": "About this application",
-    "appname-footer": "Footer text"
+	"@metadata": {
+		"authors": [
+			"Alice",
+			"Bob",
+			"Carol",
+			"David"
+		],
+		"last-updated": "2012-09-21"
+	},
+	"appname-title": "Example Application",
+	"appname-sub-title": "An example application",
+	"appname-header-introduction": "Introduction",
+	"appname-about": "About this application",
+	"appname-footer": "Footer text"
 }
 ```
 
@@ -310,6 +317,35 @@ output when passed to `json_encode()`.
 Libraries producing MessageValues in other contexts should consider whether the
 same applies to those contexts.
 
+## Scripts
+
+The following scripts are defined for testing and code fixing purposes:
+
+- `test`: Run linting and code checks.
+- `fix`: Automatically fix code style issues.
+- `phan`: Run the Phan static analyzer.
+- `phpcs`: Run the PHP Code Sniffer.
+
+Example usage:
+
+```bash
+composer run-script test
+composer run-script fix
+composer run-script phan
+composer run-script phpcs
+```
+
+## License
+This project is licensed under the GPL-2.0-or-later. See the [LICENSE](LICENSE) file for details.
+
+## Contributing
+Please read the [CONTRIBUTING](CONTRIBUTING.md) file for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Bugs
+Report bugs at [Phabricator](https://phabricator.wikimedia.org/tag/mediawiki-internationalization/).
+
+## Homepage
+For more information, visit the [homepage](https://doc.wikimedia.org/mediawiki-internationalization/).
 
 ---
 [jQuery.i18n]: https://github.com/wikimedia/jquery.i18n

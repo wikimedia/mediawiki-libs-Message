@@ -1,9 +1,9 @@
 <?php
 
-namespace Wikimedia\Tests\Message;
+namespace Wikimedia\Message\Tests\Unit\Message;
 
-use MediaWiki\Json\JsonCodec;
-use MediaWikiUnitTestCase;
+use PHPUnit\Framework\TestCase;
+use Wikimedia\JsonCodec\JsonCodec;
 use Wikimedia\Message\DataMessageValue;
 use Wikimedia\Message\ParamType;
 use Wikimedia\Message\ScalarParam;
@@ -11,48 +11,51 @@ use Wikimedia\Message\ScalarParam;
 /**
  * @covers \Wikimedia\Message\DataMessageValue
  */
-class DataMessageValueTest extends MediaWikiUnitTestCase {
-	use MessageSerializationTestTrait;
+class DataMessageValueTest extends TestCase {
 
-	/**
-	 * Overrides SerializationTestTrait::getClassToTest
-	 * @return string
-	 */
-	public static function getClassToTest(): string {
-		return DataMessageValue::class;
-	}
-
-	public static function provideConstruct() {
+	public static function provideConstruct(): array {
 		return [
 			'empty' => [
 				[ 'key' ],
 				'<datamessage key="key" code="key"></datamessage>',
 			],
 			'withParam' => [
-				[ 'key', [ 'a' ] ],
-				'<datamessage key="key" code="key"><params><text>a</text></params></datamessage>'
+				[
+					'key',
+					[ 'a' ],
+				],
+				'<datamessage key="key" code="key"><params><text>a</text></params></datamessage>',
 			],
 			'withCode' => [
-				[ 'key', [], 'code' ],
-				'<datamessage key="key" code="code"></datamessage>'
+				[
+					'key',
+					[],
+					'code',
+				],
+				'<datamessage key="key" code="code"></datamessage>',
 			],
 			'withData' => [
-				[ 'key', [ new ScalarParam( ParamType::NUM, 1 ) ], 'code', [ 'value' => 1 ] ],
-				'<datamessage key="key" code="code">'
-					. '<params><num>1</num></params>'
-					. '<data>{"value":1}</data>'
-					. '</datamessage>'
+				[
+					'key',
+					[ new ScalarParam( ParamType::NUM, 1 ) ],
+					'code',
+					[ 'value' => 1 ],
+				],
+				'<datamessage key="key" code="code">' .
+				'<params><num>1</num></params>' .
+				'<data>{"value":1}</data>' .
+				'</datamessage>',
 			],
 		];
 	}
 
 	/** @dataProvider provideConstruct */
-	public function testSerialize( $args, $_ ) {
-		$codec = new JsonCodec;
+	public function testSerialize( $args ) {
+		$jsonCodec = new JsonCodec;
 		$obj = new DataMessageValue( ...$args );
 
-		$serialized = $codec->serialize( $obj );
-		$newObj = $codec->deserialize( $serialized );
+		$serialized = $jsonCodec->toJsonString( $obj );
+		$newObj = $jsonCodec->newFromJsonString( $serialized );
 
 		// XXX: would be nice to have a proper ::equals() method.
 		$this->assertEquals( $obj->dump(), $newObj->dump() );
@@ -79,5 +82,4 @@ class DataMessageValueTest extends MediaWikiUnitTestCase {
 		$mv = new DataMessageValue( 'key', [], 'code', [ 'data' => 'foobar' ] );
 		$this->assertSame( [ 'data' => 'foobar' ], $mv->getData() );
 	}
-
 }

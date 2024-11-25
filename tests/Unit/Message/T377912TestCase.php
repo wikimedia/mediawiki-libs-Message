@@ -2,7 +2,7 @@
 
 declare( strict_types = 1 );
 
-namespace Wikimedia\Tests\Message;
+namespace Wikimedia\Message\Tests\Unit\Message;
 
 use LogicException;
 

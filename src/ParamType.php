@@ -61,7 +61,7 @@ class ParamType {
 
 	/**
 	 * User Group
-	 * @since 1.38
+	 * @since 1.0.0
 	 */
 	public const GROUP = 'group';
 
