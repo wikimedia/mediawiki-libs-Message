@@ -18,7 +18,7 @@
  * @file
  */
 
-namespace Wikimedia\Message\Tests\Unit\Message;
+namespace Wikimedia\Message\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use stdClass;

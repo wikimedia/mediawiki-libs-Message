@@ -18,50 +18,45 @@
  * @file
  */
 
-namespace Wikimedia\Message\Tests\Unit\Message;
+namespace Wikimedia\Message\Tests\Unit;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Wikimedia\JsonCodec\JsonCodec;
+use Wikimedia\Message\ListParam;
+use Wikimedia\Message\ListType;
+use Wikimedia\Message\MessageParam;
 use Wikimedia\Message\MessageValue;
 use Wikimedia\Message\ParamType;
 use Wikimedia\Message\ScalarParam;
 
 /**
- * @covers \Wikimedia\Message\ScalarParam
+ * @covers \Wikimedia\Message\ListParam
  */
-class ScalarParamTest extends TestCase {
+class ListParamTest extends TestCase {
 
 	public static function provideConstruct(): array {
 		return [
-			'num' => [
+			'commaList' => [
 				[
-					ParamType::NUM,
-					1,
+					ListType::COMMA,
+					[
+						1,
+						2,
+						3,
+					],
 				],
-				'<num>1</num>',
+				'<list listType="comma"><text>1</text><text>2</text><text>3</text></list>',
 			],
-			'plain' => [
+			'andList' => [
 				[
-					ParamType::PLAINTEXT,
-					'foo & bar',
+					ListType::AND,
+					[
+						new ScalarParam( ParamType::NUM, 5 ),
+						new MessageValue( 'key' ),
+					],
 				],
-				'<plaintext>foo &amp; bar</plaintext>',
-			],
-			'text' => [
-				[
-					ParamType::TEXT,
-					new MessageValue( 'key' ),
-				],
-				'<text><message key="key"></message></text>',
-			],
-			'T377912' => [
-				[
-					ParamType::PLAINTEXT,
-					T377912TestCase::class,
-				],
-				'<plaintext>' . T377912TestCase::class . '</plaintext>',
+				'<list listType="text"><num>5</num><text><message key="key"></message></text></list>',
 			],
 		];
 	}
@@ -70,10 +65,10 @@ class ScalarParamTest extends TestCase {
 	public function testSerialize( $args ) {
 		[
 			$type,
-			$value,
+			$values,
 		] = $args;
 		$jsonCodec = new JsonCodec;
-		$obj = new ScalarParam( $type, $value );
+		$obj = new ListParam( $type, $values );
 
 		$serialized = $jsonCodec->toJsonString( $obj );
 		$newObj = $jsonCodec->newFromJsonString( $serialized );
@@ -86,34 +81,24 @@ class ScalarParamTest extends TestCase {
 	public function testConstruct( $args, $expected ) {
 		[
 			$type,
-			$value,
+			$values,
 		] = $args;
-		$mp = new ScalarParam( $type, $value );
-		$this->assertSame( $type, $mp->getType() );
-		$this->assertSame( $value, $mp->getValue() );
-		$this->assertSame( $expected, $mp->dump() );
-	}
+		$mp = new ListParam( $type, $values );
 
-	public function testConstruct_badType() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessage(
-			'ParamType::LIST cannot be used with ScalarParam; use ListParam instead'
-		);
-		new ScalarParam( ParamType::LIST, [] );
+		$expectValues = [];
+		foreach ( $values as $v ) {
+			$expectValues[] = $v instanceof MessageParam ? $v : new ScalarParam( ParamType::TEXT, $v );
+		}
+
+		$this->assertSame( ParamType::LIST, $mp->getType() );
+		$this->assertSame( $type, $mp->getListType() );
+		$this->assertEquals( $expectValues, $mp->getValue() );
+		$this->assertSame( $expected, $mp->dump() );
 	}
 
 	public function testConstruct_badTypeConst() {
 		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessage( '$type must be one of the ParamType constants' );
-		new ScalarParam( 'invalid', '' );
+		$this->expectExceptionMessage( '$listType must be one of the ListType constants' );
+		new ListParam( 'invalid', [] );
 	}
-
-	public function testConstruct_badValueClass() {
-		$this->expectException( InvalidArgumentException::class );
-		$this->expectExceptionMessage(
-			'Scalar parameter must be a string, number, Stringable, or MessageSpecifier; got stdClass'
-		);
-		new ScalarParam( ParamType::TEXT, new stdClass );
-	}
-
 }
