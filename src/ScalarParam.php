@@ -63,7 +63,7 @@ class ScalarParam extends MessageParam {
 			$valType = get_debug_type( $value );
 			if ( $value === null || is_bool( $value ) ) {
 				trigger_error(
-					"Using $valType as a message parameter was deprecated in version 1.0.0",
+					"Using $valType as a message parameter was deprecated in MediaWiki 1.43",
 					E_USER_DEPRECATED
 				);
 				$value = (string)$value;

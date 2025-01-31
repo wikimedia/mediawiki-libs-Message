@@ -108,6 +108,36 @@ class ScalarParamTest extends TestCase {
 		new ScalarParam( 'invalid', '' );
 	}
 
+	public function testConstruct_badValueNULL() {
+		$this->assertDeprecation(
+			static function () {
+				new ScalarParam( ParamType::TEXT, null );
+			},
+			'Using null as a message parameter was deprecated in MediaWiki 1.43'
+		);
+	}
+
+	public function assertDeprecation( callable $callback, string $message ) {
+		$errorTriggered = false;
+
+		set_error_handler( function ( $errno, $errstr ) use ( $message, &$errorTriggered ) {
+			if ( $errno === E_DEPRECATED || $errno === E_USER_DEPRECATED ) {
+				$this->assertStringContainsString( $message, $errstr );
+				$errorTriggered = true;
+				return true;
+			}
+			return false;
+		} );
+
+		try {
+			$callback();
+		} finally {
+			restore_error_handler();
+		}
+
+		$this->assertTrue( $errorTriggered, 'Expected deprecation warning was not triggered.' );
+	}
+
 	public function testConstruct_badValueClass() {
 		$this->expectException( InvalidArgumentException::class );
 		$this->expectExceptionMessage(
