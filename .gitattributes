@@ -6,3 +6,4 @@
  .phpcs.xml export-ignore
  phpunit.bootstrap.php export-ignore
  phpunit.xml.dist export-ignore
+tests/ export-ignore
