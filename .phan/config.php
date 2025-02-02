@@ -19,13 +19,10 @@ $cfg['strict_method_checking'] = true;
 $cfg['strict_object_checking'] = true;
 $cfg['strict_property_checking'] = true;
 
-$cfg['suppress_issue_types'] = [
-	'PhanUndeclaredMethod',
-	'PhanParamTooFewUnpack',
-	'SecurityCheck-LikelyFalsePositive',
-	'PhanNoopNew',
-	'PhanTypeMismatchArgument',
-	'PhanTypeMismatchArgumentProbablyReal',
+$cfg['exclude_analysis_directory_list'] = [
+	'vendor/',
+	'.phan/',
+	'tests/',
 ];
 
 return $cfg;
