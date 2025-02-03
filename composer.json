@@ -6,6 +6,7 @@
 		"wikimedia",
 		"message"
 	],
+	"homepage": "https://www.mediawiki.org/wiki/Message_(PHP_library)",
 	"authors": [
 		{
 			"name": "Bartosz Dziewoński",
@@ -69,6 +70,9 @@
 		}
 	],
 	"license": "GPL-2.0-or-later",
+	"support": {
+		"issues": "https://phabricator.wikimedia.org/tag/message/"
+	},
 	"require": {
 		"php": "^7.4 || ^8.0",
 		"ext-json": "*",
