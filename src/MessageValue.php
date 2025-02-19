@@ -70,7 +70,7 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 	 *
 	 * When the given object is an instance of MessageValue, the same object is returned.
 	 *
-	 * @since 1.0.0
+	 * @since MediaWiki 1.43
 	 * @param MessageSpecifier $spec
 	 * @return MessageValue
 	 */
@@ -207,7 +207,7 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 	/**
 	 * Chainable mutator which adds parameters which are a date-time timestamp (ParamType::DATETIME).
 	 *
-	 * @since 1.0.0
+	 * @since MediaWiki 1.36
 	 * @param string ...$values Timestamp as accepted by the Wikimedia\Timestamp library.
 	 * @return $this
 	 */
@@ -218,7 +218,7 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 	/**
 	 * Chainable mutator which adds parameters which are a date timestamp (ParamType::DATE).
 	 *
-	 * @since 1.0.0
+	 * @since MediaWiki 1.36
 	 * @param string ...$values Timestamp as accepted by the Wikimedia\Timestamp library.
 	 * @return $this
 	 */
@@ -229,7 +229,7 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 	/**
 	 * Chainable mutator which adds parameters which are a time timestamp (ParamType::TIME).
 	 *
-	 * @since 1.0.0
+	 * @since MediaWiki 1.36
 	 * @param string ...$values Timestamp as accepted by the Wikimedia\Timestamp library.
 	 * @return $this
 	 */
@@ -240,7 +240,7 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 	/**
 	 * Chainable mutator which adds parameters which are a user group (ParamType::GROUP).
 	 *
-	 * @since 1.0.0
+	 * @since MediaWiki 1.38
 	 * @param string ...$values User Groups
 	 * @return $this
 	 */

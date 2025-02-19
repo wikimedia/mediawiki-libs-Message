@@ -79,7 +79,7 @@ class ParamType {
 
 	/**
 	 * User Group
-	 * @since 1.0.0
+	 * @since MediaWiki 1.38
 	 */
 	public const GROUP = 'group';
 
