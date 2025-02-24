@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.2 (2025-02-24)
+- .gitattributes: Update and simplify
+- Bump HISTORY.md after release
+- composer.json: Add homepage and support
+- Update version annotations and add alias
+
 ## 1.0.1 (2025-02-02)
 - .gitattributes: Exclude tests directory from export
 - tests: Add test for deprecated null value usage in ScalarParam
