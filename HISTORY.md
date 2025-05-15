@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.3 (2025-05-15)
+- Merge "phan: Simplify configuration"
+- build: Updating mediawiki/mediawiki-codesniffer to 47.0.0
+- phan: Simplify configuration
+- Bump HISTORY.md after release
+
 ## 1.0.2 (2025-02-24)
 - .gitattributes: Update and simplify
 - Bump HISTORY.md after release
