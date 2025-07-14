@@ -74,7 +74,7 @@
 		"issues": "https://phabricator.wikimedia.org/tag/message/"
 	},
 	"require": {
-		"php": "^7.4 || ^8.0",
+		"php": ">=8.1.0",
 		"ext-json": "*",
 		"wikimedia/json-codec": "^3.0",
 		"wikimedia/testing-access-wrapper": "^3.0"
