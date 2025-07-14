@@ -1,5 +1,10 @@
 # Release History
 
+## 1.0.4 (2025-07-14)
+- Require PHP 8.1 and sync with MediaWiki core changes
+- build: Update mediawiki/mediawiki-phan-config to 0.16.0
+- Bump HISTORY.md after release
+
 ## 1.0.3 (2025-05-15)
 - Merge "phan: Simplify configuration"
 - build: Updating mediawiki/mediawiki-codesniffer to 47.0.0
