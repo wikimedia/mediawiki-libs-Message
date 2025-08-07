@@ -71,7 +71,7 @@ class MessageValueTest extends TestCase {
 		$newObj = $jsonCodec->newFromJsonString( $serialized );
 
 		// XXX: would be nice to have a proper ::equals() method.
-		$this->assertEquals( $obj->dump(), $newObj->dump() );
+		$this->assertTrue( $obj->isSameAs( $newObj ), $newObj->dump() );
 	}
 
 	/** @dataProvider provideConstruct */

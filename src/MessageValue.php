@@ -17,9 +17,9 @@
  *
  * @file
  */
-
 namespace Wikimedia\Message;
 
+use Wikimedia\Assert\Assert;
 use Wikimedia\JsonCodec\JsonCodecable;
 use Wikimedia\JsonCodec\JsonCodecableTrait;
 
@@ -39,7 +39,7 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 
 	private string $key;
 
-	/** @var MessageParam[] */
+	/** @var list<MessageParam> */
 	private array $params;
 
 	/**
@@ -53,6 +53,8 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 		$this->key = $key;
 		$this->params = [];
 		$this->params( ...$params );
+		// @phan-suppress-next-line PhanRedundantCondition phan doesn't see side-effects on $this->params
+		Assert::invariant( array_is_list( $this->params ), "should be list" );
 	}
 
 	/**
@@ -367,12 +369,28 @@ class MessageValue implements MessageSpecifier, JsonCodecable {
 			$contents . '</message>';
 	}
 
+	public function isSameAs( MessageValue $mv ): bool {
+		return $this->key === $mv->key &&
+			count( $this->params ) === count( $mv->params ) &&
+			array_all(
+				$this->params,
+				static fn ( $v, $k ) => $v->isSameAs( $mv->params[$k] )
+			);
+	}
+
 	public function toJsonArray(): array {
 		// WARNING: When changing how this class is serialized, follow the instructions
 		// at <https://www.mediawiki.org/wiki/Manual:Parser_cache/Serialization_compatibility>!
 		return [
 			'key' => $this->key,
-			'params' => $this->params,
+			'params' => array_map(
+			/**
+			 * Serialize trivial parameters as scalar values to minimize the footprint. Full
+			 * round-trip compatibility is guaranteed via the constructor and {@see params}.
+			 */
+				static fn ( $p ) => $p->getType() === ParamType::TEXT ? $p->getValue() : $p,
+				$this->params
+			),
 		];
 	}
 
