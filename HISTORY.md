@@ -1,5 +1,9 @@
 # Release History
 
+## 1.0.5 (2025-08-08)
+- Apply changes from mw-core
+- Bump HISTORY.md after release
+
 ## 1.0.4 (2025-07-14)
 - Require PHP 8.1 and sync with MediaWiki core changes
 - build: Update mediawiki/mediawiki-phan-config to 0.16.0
