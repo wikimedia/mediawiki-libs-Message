@@ -77,7 +77,7 @@
 		"php": ">=8.1.0",
 		"ext-json": "*",
 		"symfony/polyfill-php84": "1.32.0",
-		"wikimedia/json-codec": "^3.0",
+		"wikimedia/json-codec": "^4.0",
 		"wikimedia/testing-access-wrapper": "^4.0.0",
 		"wikimedia/assert": "^0.5.1"
 	},
