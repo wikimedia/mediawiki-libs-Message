@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.6 (2026-02-12)
+- Allow `wikimedia/testing-access-wrapper` 4.0.0 for PHP 8.5 support
+
 ## 1.0.5 (2025-08-08)
 - Apply changes from mw-core
 - Bump HISTORY.md after release
