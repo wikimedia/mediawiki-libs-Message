@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.6 (2026-02-12)
+* build: Upgrade mediawiki/mediawiki-codesniffer to 48.0.0 (libraryupgrader)
+* build: Upgrade mediawiki/mediawiki-phan-config to 0.19.0 (libraryupgrader, James D. Forrester)
+* build: Upgrade ockcyp/covers-validator to 1.7.0 (libraryupgrader)
+* build: Upgrade phpunit/phpunit to 10.5.63 (Umherirrender, James D. Forrester)
+* build: Upgrade wikimedia/json-codec to v4.0.0 (Doğu Abaris)
+* build: Upgrade wikimedia/testing-access-wrapper to 4.0.0 (Umherirrender, James D. Forrester)
+
 ## 1.0.5 (2025-08-08)
 - Apply changes from mw-core
 - Bump HISTORY.md after release
