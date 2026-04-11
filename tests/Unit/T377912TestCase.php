@@ -20,8 +20,6 @@ declare( strict_types = 1 );
  * @file
  */
 
-declare( strict_types = 1 );
-
 namespace Wikimedia\Message\Tests\Unit;
 
 use LogicException;
